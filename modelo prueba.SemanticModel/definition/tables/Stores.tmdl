@@ -1,0 +1,65 @@
+table Stores
+	lineageTag: 0db9db80-b6f9-4a8f-b0ed-ee6b15fa2fe5
+
+	column StoreID
+		dataType: int64
+		formatString: 0
+		lineageTag: db14e339-d4fb-480c-af10-2dc953874e2c
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: a24c2892-b285-455b-bd14-a86c72166f68
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: 683f670d-232f-437f-b47a-aec0f5c64d49
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Longitude
+		dataType: double
+		lineageTag: dc321ff3-f022-4253-9d3a-2d2008c3e7ef
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Latitude
+		dataType: double
+		lineageTag: 0cf8cf05-1fda-4599-8174-604890eb03f9
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Stores = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("G:\Mi unidad\Power BI Bootcamp\Parctical case . Data Sources.xlsx"), null, true),
+				    Stores_Sheet = Origen{[Item="Stores",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Stores_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"ID", Int64.Type}, {"Name", type text}, {"Type", type text}, {"Longitude", type number}, {"Latitude", type number}}),
+				    #"Filas en blanco eliminadas" = Table.SelectRows(#"Tipo cambiado", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Filas en blanco eliminadas",{{"ID", "StoreID"}})
+				in
+				    #"Columnas con nombre cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

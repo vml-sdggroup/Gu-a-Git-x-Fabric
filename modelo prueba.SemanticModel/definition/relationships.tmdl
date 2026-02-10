@@ -1,0 +1,17 @@
+relationship 900fd78f-0fde-9c1d-d180-95e89f0ec439
+	fromColumn: FactSales.ProductID
+	toColumn: Products.ProductID
+
+relationship 47ab6607-2c87-a7d2-8dde-950b7164eed0
+	fromColumn: FactSales.StoreID
+	toColumn: Stores.StoreID
+
+relationship 533837ea-fa3a-41dc-8174-6785b94422b0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSales.Date
+	toColumn: LocalDateTable_77a9c212-bba5-4ff9-8273-e5577cc2b426.Date
+
+relationship 4348e1a2-34cf-dd48-c18a-f46c4b808f37
+	fromColumn: FactSales.DateID
+	toColumn: Calendar.DateID
+

@@ -1,0 +1,102 @@
+table Calendar
+	lineageTag: 0e94b820-b197-4f0d-b273-d1c7840f01c3
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 7fb189cf-b69d-42bd-a131-78666dc04dee
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year = YEAR([Date])
+		formatString: 0
+		lineageTag: 1a0582c9-0f49-49bf-b215-f3e3f91dd49d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNr = MONTH([Date])
+		formatString: 0
+		lineageTag: 0480009d-8ae1-4e48-86b4-797310c78e5c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = FORMAT([Date], "MMMM")
+		lineageTag: 523d17df-5b6e-4e25-9e04-aefe9fe3f749
+		summarizeBy: none
+		sortByColumn: MonthNr
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayNr = DAY([Date])
+		formatString: 0
+		lineageTag: a4aa47b7-b438-4d57-9cc1-d30c62d90c2f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day = FORMAT([Date], "DDDD")
+		lineageTag: 9f6ece13-39e8-4f3e-8760-9da6e7aab73c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterNr = "Q" & FORMAT([Date],"Q")
+		lineageTag: a2636789-13fa-4b3c-aeab-b7478503fea2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth = ```
+			FORMAT(([Date]), "YYYY-MM") 
+			```
+		lineageTag: 3639e3d8-1329-4b3d-9630-adaf2b986a66
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthSort = YEAR([Date]) * 100 + MONTH([Date])
+		formatString: 0
+		lineageTag: bb94f734-6b98-4f0c-a488-aa641324c16a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateID = FORMAT([Date],"YYYYMMDD")
+		lineageTag: 01da4f6a-059b-4ac6-8ddf-6bc2547e42c6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Calendar Jerarquía'
+		lineageTag: 7abf6ce6-52a8-473b-9d14-2f1e69f6d680
+
+		level Year
+			lineageTag: 978c8c29-1635-4c00-82fb-e20318480c5e
+			column: Year
+
+		level QuarterNr
+			lineageTag: c8350904-fd9b-4700-b891-64c60275f76f
+			column: QuarterNr
+
+		level Month
+			lineageTag: e7f0b3ac-544f-4924-8f33-aa072373073e
+			column: Month
+
+		level DayNr
+			lineageTag: c133aee5-d5a7-411b-9846-5d5d11c5979b
+			column: DayNr
+
+	partition Calendar = calculated
+		mode: import
+		source = CALENDAR(MIN(FactSales[Date]),MAX(FactSales[Date]))
+
+	annotation PBI_Id = 4713aa8c282b464299809184407b4f4c
+

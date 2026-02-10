@@ -1,0 +1,224 @@
+table FactSales
+	lineageTag: 6b1d9136-bee6-4c84-bfea-6e19e90d0c83
+
+	column SalesID
+		dataType: int64
+		formatString: 0
+		lineageTag: c19592f6-e8e2-4683-9e14-4a9487e428c8
+		summarizeBy: count
+		sourceColumn: SalesID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: a4c30e99-70c9-43b9-b9ba-7d221b371819
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreID
+		dataType: int64
+		formatString: 0
+		lineageTag: 20c5e31b-e06d-4518-8ebe-8d7267b0410b
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 64b5a0a0-222f-4bdd-931d-e699c9784c8d
+		summarizeBy: none
+		sourceColumn: Status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unit
+		dataType: int64
+		formatString: 0
+		lineageTag: 7ef90f91-6eef-468a-a3b2-9209517f3550
+		summarizeBy: sum
+		sourceColumn: Unit
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: e0ae8d18-9583-4711-b3f7-73831d2b103a
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-US"}
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 3001f72e-67bb-4d04-88cc-f68b4e0f0dbd
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variación
+			isDefault
+			relationship: 533837ea-fa3a-41dc-8174-6785b94422b0
+			defaultHierarchy: LocalDateTable_77a9c212-bba5-4ff9-8273-e5577cc2b426.'Jerarquía de fechas'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Issue
+		dataType: string
+		lineageTag: 7a018374-e716-46d1-8bb4-6833a26bbca7
+		summarizeBy: none
+		sourceColumn: Issue
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Promotion
+		dataType: string
+		lineageTag: 3348c400-c70a-4391-a7ff-b43f00ea70eb
+		summarizeBy: none
+		sourceColumn: Promotion
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountPromotion
+		dataType: double
+		lineageTag: 9743bf7e-c2b6-4ac0-8480-581bb51143a2
+		summarizeBy: sum
+		sourceColumn: AmountPromotion
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Gender
+		dataType: string
+		lineageTag: 0490ed04-c1b0-442e-8a00-56c7f3f3431d
+		summarizeBy: none
+		sourceColumn: Gender
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: string
+		lineageTag: d2b70432-fc84-43c1-8def-64667bb01bd8
+		summarizeBy: none
+		sourceColumn: Age
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryAge
+		dataType: string
+		lineageTag: dbebcf27-1e9e-4f23-a5ed-97eddd1b3a78
+		summarizeBy: none
+		sourceColumn: CategoryAge
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateID = FORMAT([Date],"YYYYMMDD")
+		lineageTag: 1b2909d2-a111-445a-b13e-a5f92aa2025d
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sale = FactSales[Amount] * (1 - FactSales[AmountPromotion])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: df47cc26-c2b1-434c-9930-4a9032ef9a87
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	hierarchy 'Gender-Age Jerarquía'
+		lineageTag: acc8fe44-ff1d-41a7-99c2-6183b93b7251
+
+		level Gender
+			lineageTag: d230bf9b-eaee-468b-b0b6-2ac23559680b
+			column: Gender
+
+		level Age
+			lineageTag: dbfec8ca-be50-4134-be36-f8eeaa9cc4b8
+			column: Age
+
+		level Promotion
+			lineageTag: 50a89dae-50e9-4521-a11b-244728d2f1b2
+			column: Promotion
+
+		changedProperty = IsHidden
+
+	hierarchy 'Issue-Promotion Jerarquía'
+		lineageTag: bfcff160-ee07-48f6-b74f-2f6733b3963c
+
+		level Issue
+			lineageTag: 74a14e0b-62b9-477a-87c2-69e7f5f8ee6a
+			column: Issue
+
+		level Promotion
+			lineageTag: 07b21dc3-a485-40aa-b447-cff800e927c2
+			column: Promotion
+
+		changedProperty = IsHidden
+
+	partition FactSales = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("G:\Mi unidad\Power BI Bootcamp\Parctical case . Data Sources.xlsx"), null, true),
+				    Sales_Sheet = Origen{[Item="Sales",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Sales_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"ProductID", Int64.Type}, {"StoreID", Int64.Type}, {"Status", type text}, {"Sales ID", Int64.Type}, {"Unit", Int64.Type}, {"Amount", Int64.Type}, {"Date", Int64.Type}}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Tipo cambiado",{{"Sales ID", "SalesID"}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas con nombre cambiado",{"SalesID", "ProductID", "StoreID", "Status", "Unit", "Amount", "Date"}),
+				    #"Filas ordenadas" = Table.Sort(#"Columnas reordenadas",{{"SalesID", Order.Ascending}}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Filas ordenadas",{{"Date", type date}, {"Amount", Currency.Type}}),
+				    #"Consultas combinadas" = Table.NestedJoin(#"Tipo cambiado1", {"SalesID"}, #"Issues & Promotions", {"SalesID"}, "Issues & Promotions", JoinKind.LeftOuter),
+				    #"Se expandió Issues & Promotions" = Table.ExpandTableColumn(#"Consultas combinadas", "Issues & Promotions", {"Issue", "Promotion", "AmountPromotion"}, {"Issue", "Promotion", "AmountPromotion"}),
+				    #"Consultas combinadas1" = Table.NestedJoin(#"Se expandió Issues & Promotions", {"SalesID"}, Segmentation, {"SalesID"}, "Segmentation", JoinKind.LeftOuter),
+				    #"Se expandió Segmentation" = Table.ExpandTableColumn(#"Consultas combinadas1", "Segmentation", {"Gender", "Age", "CategoryAge"}, {"Gender", "Age", "CategoryAge"})
+				in
+				    #"Se expandió Segmentation"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,147 @@
+table Products
+	lineageTag: e98d6708-1070-4566-a8a1-4021cb663c2a
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: aaaaff7b-92f7-482d-9519-125fae55d3f0
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: 6dde25a7-e050-4123-9c51-7324436e927d
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 1f24bb0b-03c0-4646-ada3-1f7be2f2d2a5
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9909c199-e281-4828-aace-d4979a23f798
+		summarizeBy: none
+		sourceColumn: CategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: d4f38862-22db-4c6c-9d74-7a46a70ff560
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column SegmentID
+		dataType: int64
+		formatString: 0
+		lineageTag: f5b2451b-8ab9-4d5b-817c-0796cab9e294
+		summarizeBy: none
+		sourceColumn: SegmentID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductImage
+		dataType: string
+		lineageTag: 7313ccaf-7827-4db1-b70e-9677a0fb769c
+		summarizeBy: none
+		sourceColumn: ProductImage
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductLogoImage
+		dataType: string
+		lineageTag: 7f5a63e9-819f-425a-add0-b4ab3a012021
+		summarizeBy: none
+		sourceColumn: ProductLogoImage
+
+		annotation SummarizationSetBy = Automatic
+
+	column SegmentColor
+		dataType: string
+		lineageTag: 19d39be9-3862-4872-bf78-2182b6577dbe
+		summarizeBy: none
+		sourceColumn: SegmentColor
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryImage
+		dataType: string
+		lineageTag: aac6aae7-77a9-4a4e-a677-57399c7de965
+		summarizeBy: none
+		sourceColumn: CategoryImage
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 10eaadb1-759b-49d1-9856-57772c3dc3ec
+		summarizeBy: none
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column PriceRange
+		dataType: string
+		lineageTag: 0306bacc-05dc-4a0d-a79e-a188156264a6
+		summarizeBy: none
+		sourceColumn: PriceRange
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryPriceRange
+		dataType: string
+		lineageTag: 51b073fa-360d-4a06-aac8-19d39632995b
+		summarizeBy: none
+		sourceColumn: CategoryPriceRange
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Category Jerarquía'
+		lineageTag: 901c4bc4-5c29-4397-aaa8-4e554affa681
+
+		level Category
+			lineageTag: f677b209-2113-4e24-b984-f62bbeee2ca0
+			column: Category
+
+		level Product
+			lineageTag: a69f60ff-32b8-4060-adc0-3158ec3ad681
+			column: Product
+
+		level Segment
+			lineageTag: 12f27ff0-4a8e-4719-b055-5aa6fc5c9212
+			column: Segment
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("G:\Mi unidad\Power BI Bootcamp\Parctical case . Data Sources.xlsx"), null, true),
+				    Products_Sheet = Origen{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Product", type text}, {"ID", Int64.Type}, {"Category", type text}, {"CategoryID", Int64.Type}, {"Segment", type text}, {"SegmentID", Int64.Type}, {"Product Image", type text}, {"Product Logo Image", type text}, {"Segment Color", type text}, {"Category Image", type text}, {"Price", type text}, {"Price Range", type text}}),
+				    #"Filas en blanco eliminadas" = Table.SelectRows(#"Tipo cambiado", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Filas en blanco eliminadas",{"ID", "Product", "Category", "CategoryID", "Segment", "SegmentID", "Product Image", "Product Logo Image", "Segment Color", "Category Image", "Price", "Price Range"}),
+				    #"Valor reemplazado" = Table.ReplaceValue(#"Columnas reordenadas","$","",Replacer.ReplaceText,{"Price"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Valor reemplazado",{{"Price", Currency.Type}}),
+				    #"Columna condicional agregada" = Table.AddColumn(#"Tipo cambiado1", "CategoryPriceRange", each if [Price] < 40 then 1 else if [Price] <= 70 then 2 else 3),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columna condicional agregada",{{"ID", "ProductID"}, {"Product Image", "ProductImage"}, {"Product Logo Image", "ProductLogoImage"}, {"Segment Color", "SegmentColor"}, {"Category Image", "CategoryImage"}, {"Price Range", "PriceRange"}})
+				in
+				    #"Columnas con nombre cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

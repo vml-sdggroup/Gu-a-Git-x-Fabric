@@ -1,0 +1,24 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-ES
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Issues & Promotions","Products","FactSales","Segmentation","Stores","fnCrearCalendario","Calendario"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Products
+ref table FactSales
+ref table Stores
+ref table Calendar
+ref table DateTableTemplate_88d3ab42-52ac-4f0c-80e3-a2a7b51a7222
+ref table LocalDateTable_77a9c212-bba5-4ff9-8273-e5577cc2b426
+ref table Metrics
+
+ref cultureInfo es-ES
+
