@@ -50,7 +50,7 @@ table Stores
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("G:\Shared drives\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents("G:\Unidades Compartidas\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
 				    Stores_Sheet = Origen{[Item="Stores",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Stores_Sheet, [PromoteAllScalars=true]),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"ID", Int64.Type}, {"Name", type text}, {"Type", type text}, {"Longitude", type number}, {"Latitude", type number}}),
