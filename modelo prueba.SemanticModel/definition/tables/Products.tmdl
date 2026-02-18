@@ -128,7 +128,7 @@ table Products
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("G:\Unidades compartidas\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents("G:\Shared drives\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
 				    Products_Sheet = Origen{[Item="Products",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Product", type text}, {"ID", Int64.Type}, {"Category", type text}, {"CategoryID", Int64.Type}, {"Segment", type text}, {"SegmentID", Int64.Type}, {"Product Image", type text}, {"Product Logo Image", type text}, {"Segment Color", type text}, {"Category Image", type text}, {"Price", type text}, {"Price Range", type text}}),

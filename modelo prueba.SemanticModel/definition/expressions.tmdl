@@ -55,7 +55,7 @@ expression Calendario =
 
 expression 'Issues & Promotions' =
 		let
-		    Origen = Excel.Workbook(File.Contents("G:\Unidades compartidas\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
+		    Origen = Excel.Workbook(File.Contents("G:\Shared drives\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
 		    #"Issues & Promotions_Sheet" = Origen{[Item="Issues & Promotions",Kind="Sheet"]}[Data],
 		    #"Encabezados promovidos" = Table.PromoteHeaders(#"Issues & Promotions_Sheet", [PromoteAllScalars=true]),
 		    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Sales ID", Int64.Type}, {"Issue", type text}, {"Promotion", type text}}),
@@ -72,7 +72,7 @@ expression 'Issues & Promotions' =
 
 expression Segmentation =
 		let
-		    Origen = Excel.Workbook(File.Contents("G:\Unidades compartidas\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
+		    Origen = Excel.Workbook(File.Contents("G:\Shared drives\GC Pharma Goods\10 Kenvue\40 Trainings\80 Git training\Parctical case . Data Sources.xlsx"), null, true),
 		    Segmentation_Sheet = Origen{[Item="Segmentation",Kind="Sheet"]}[Data],
 		    #"Encabezados promovidos" = Table.PromoteHeaders(Segmentation_Sheet, [PromoteAllScalars=true]),
 		    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Sales ID", Int64.Type}, {"Gender", type text}, {"Age", type text}}),
