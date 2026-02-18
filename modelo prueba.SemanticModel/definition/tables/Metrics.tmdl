@@ -226,6 +226,12 @@ table Metrics
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+	measure total_amount = SUM(FactSales[Amount])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 09b39aba-b7c0-4d7f-8c2c-98109296a98e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
 	column Column
 		formatString: 0
 		lineageTag: a7dd72f9-7e06-416c-934a-4241f424c74f
