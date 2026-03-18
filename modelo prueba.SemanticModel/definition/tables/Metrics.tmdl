@@ -7,9 +7,13 @@ table Metrics
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+		annotation Description = "Sum of all net sales across all transactions"
+
 	measure TotalUnits = SUM(FactSales[Unit])
 		formatString: 0
 		lineageTag: e467f0fe-193e-4c4a-b8d8-61e7ed255b69
+
+		annotation Description = "Total quantity of units sold"
 
 	measure TotalIssues =
 			
@@ -19,6 +23,8 @@ table Metrics
 			)
 		formatString: 0
 		lineageTag: 00de0ed5-cf19-482b-b26b-63d37663bbf2
+
+		annotation Description = "Count of transactions with reported issues"
 
 	measure TotalSalesWithPromotion = CALCULATE(SUM(FactSales[Sale]), FactSales[Promotion] <> "None")
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
@@ -73,6 +79,8 @@ table Metrics
 		lineageTag: 8ea77e37-2c0f-4dd4-b99a-720fb0d9d87e
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
+
+		annotation Description = "Average sale amount per transaction"
 
 	measure 'Total Net Sales PY' =
 			
@@ -231,6 +239,13 @@ table Metrics
 		lineageTag: 09b39aba-b7c0-4d7f-8c2c-98109296a98e
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Market Share by Category' = DIVIDE([Total_Net_Sales], CALCULATE([Total_Net_Sales], ALL('Products')), 0)
+		formatString: 0.00%
+		displayFolder: Market Analysis
+		lineageTag: a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p
+
+		annotation Description = "Calculates the relative percentage of market share by product category"
 
 	column Column
 		formatString: 0
