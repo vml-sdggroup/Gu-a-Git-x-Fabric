@@ -94,6 +94,10 @@ table Calendar
 			lineageTag: c133aee5-d5a7-411b-9846-5d5d11c5979b
 			column: DayNr
 
+	/// Tabla de fechas generada con la función DAX CALENDAR().
+	/// Abarca desde la fecha mínima hasta la máxima de FactSales[Date].
+	/// Columnas derivadas: Year, MonthNr, Month, DayNr, Day, QuarterNr, YearMonth, YearMonthSort, DateID.
+	/// Marcada como tabla de tiempo (dataCategory: Time).
 	partition Calendar = calculated
 		mode: import
 		source = CALENDAR(MIN(FactSales[Date]),MAX(FactSales[Date]))

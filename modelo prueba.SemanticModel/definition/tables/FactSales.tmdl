@@ -197,6 +197,12 @@ table FactSales
 
 		changedProperty = IsHidden
 
+	/// Tabla de hechos principal. Carga la hoja 'Sales' del archivo Excel compartido.
+	/// Pasos: (1) Conecta al libro Excel. (2) Extrae la hoja 'Sales'. (3) Promueve encabezados.
+	/// (4) Ajusta tipos de datos. (5) Renombra 'Sales ID' a 'SalesID'. (6) Reordena columnas.
+	/// (7) Ordena por SalesID ascendente. (8) Join izquierdo con 'Issues & Promotions' por SalesID
+	/// para incorporar Issue, Promotion y AmountPromotion. (9) Join izquierdo con 'Segmentation'
+	/// por SalesID para incorporar Gender, Age y CategoryAge.
 	partition FactSales = m
 		mode: import
 		source =

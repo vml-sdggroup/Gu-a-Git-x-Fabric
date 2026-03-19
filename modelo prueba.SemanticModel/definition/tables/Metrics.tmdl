@@ -294,6 +294,9 @@ table Metrics
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Tabla calculada vacía usada como contenedor de medidas DAX del modelo.
+	/// No contiene filas de datos. Su único propósito es agrupar las medidas
+	/// de forma separada a las tablas de hechos y dimensiones.
 	partition Metrics = calculated
 		mode: import
 		source = Row("Column", BLANK())

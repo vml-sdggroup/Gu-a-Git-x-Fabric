@@ -46,6 +46,10 @@ table Stores
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Tabla de dimensión de tiendas. Carga la hoja 'Stores' del archivo Excel compartido.
+	/// Pasos: (1) Conecta al libro Excel. (2) Extrae la hoja 'Stores'. (3) Promueve encabezados.
+	/// (4) Ajusta tipos de datos (entero, texto, número para coordenadas geográficas).
+	/// (5) Elimina filas en blanco. (6) Renombra 'ID' a 'StoreID'.
 	partition Stores = m
 		mode: import
 		source =

@@ -124,6 +124,12 @@ table Products
 			lineageTag: 12f27ff0-4a8e-4719-b055-5aa6fc5c9212
 			column: Segment
 
+	/// Tabla de dimensión de productos. Carga la hoja 'Products' del archivo Excel compartido.
+	/// Pasos: (1) Conecta al libro Excel. (2) Extrae la hoja 'Products'. (3) Promueve encabezados.
+	/// (4) Ajusta tipos de datos. (5) Elimina filas en blanco. (6) Reordena columnas.
+	/// (7) Elimina el símbolo '$' de la columna Price. (8) Convierte Price a tipo Currency.
+	/// (9) Agrega columna 'CategoryPriceRange': 1 si Price < 40, 2 si <= 70, 3 en otro caso.
+	/// (10) Renombra columnas a nombres estándar (ProductID, ProductImage, ProductLogoImage, etc.).
 	partition Products = m
 		mode: import
 		source =
