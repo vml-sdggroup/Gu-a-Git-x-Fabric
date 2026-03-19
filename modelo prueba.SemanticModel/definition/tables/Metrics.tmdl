@@ -16,7 +16,7 @@ table Metrics
 		annotation Description = "Total quantity of units sold"
 
 	measure TotalIssues =
-			
+
 			CALCULATE(
 			    COUNTROWS(FactSales),
 			    KEEPFILTERS(FactSales[Issue] <> "None")
@@ -32,8 +32,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+		annotation Description = "Sum of net sales for transactions where a promotion was applied"
+
 	measure TotalAmountDiscounted =
-			
+
 			SUMX(
 			    FactSales,
 			    FactSales[Amount] * FactSales[AmountPromotion]
@@ -43,12 +45,16 @@ table Metrics
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+		annotation Description = "Total monetary value of discounts applied across all transactions (gross amount × discount rate)"
+
 	measure TransactionsNumber = DISTINCTCOUNT(FactSales[SalesID])
 		formatString: 0
 		lineageTag: 2a119eff-c9df-4fd9-8ff2-796dbf8ca6d8
 
+		annotation Description = "Count of distinct transactions (unique SalesIDs)"
+
 	measure IssuesRatio =
-			
+
 			DIVIDE(
 			    [TotalIssues],
 			    [TransactionsNumber],0
@@ -57,8 +63,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Ratio of transactions with issues to total transactions (TotalIssues / TransactionsNumber)"
+
 	measure Ratio_Sales_Discounted =
-			
+
 			DIVIDE(
 			    [TotalAmountDiscounted],
 			    [Total_Net_Sales] + [TotalAmountDiscounted],
@@ -68,8 +76,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Proportion of gross sales that was discounted (TotalAmountDiscounted / (Total_Net_Sales + TotalAmountDiscounted))"
+
 	measure AVG_Sale_Amount =
-			
+
 			DIVIDE(
 			    [Total_Net_Sales],
 			    [TransactionsNumber],
@@ -83,7 +93,7 @@ table Metrics
 		annotation Description = "Average sale amount per transaction"
 
 	measure 'Total Net Sales PY' =
-			
+
 			CALCULATE(
 			    SUM(FactSales[Sale]),
 			    SAMEPERIODLASTYEAR('Calendar'[Date])
@@ -91,8 +101,10 @@ table Metrics
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 76359641-7d79-4ecd-a0c2-736590a34f12
 
+		annotation Description = "Net sales for the same period in the previous year"
+
 	measure 'Issues with promo' =
-			
+
 			CALCULATE(
 			    Metrics[TotalIssues],
 			    FactSales[Promotion] <> "None"
@@ -101,8 +113,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Count of issues in transactions where a promotion was applied"
+
 	measure 'Issues wit no promo' =
-			
+
 			CALCULATE(
 			    Metrics[TotalIssues],
 			    FactSales[Promotion] = "None"
@@ -111,8 +125,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Count of issues in transactions with no promotion applied"
+
 	measure TotalIssuesLY =
-			
+
 			CALCULATE(
 			    [TotalIssues],
 			    SAMEPERIODLASTYEAR(('Calendar'[Date])
@@ -120,8 +136,10 @@ table Metrics
 		formatString: 0
 		lineageTag: 791ebaaa-9d1b-42e2-8e69-ef5e284bf442
 
+		annotation Description = "Count of issues for the same period in the previous year"
+
 	measure %DiffIssuesLY =
-			
+
 			IF(
 			    NOT ISBLANK([TotalSalesLY]),
 			    DIVIDE(
@@ -131,8 +149,10 @@ table Metrics
 			)
 		lineageTag: 35560aed-ba86-49bd-bccc-b32e44cde60b
 
+		annotation Description = "Percentage change in issues compared to the same period last year (DiffIssuesLY / TotalIssuesLY)"
+
 	measure DiffIssuesLY =
-			
+
 			// Primero, comprobamos si hay ventas en el periodo actual para evitar cálculos innecesarios
 			IF(
 			    NOT ISBLANK([TotalIssues]),
@@ -148,8 +168,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Absolute difference in issues vs the same period last year. Returns N/A when no prior year data is available"
+
 	measure TotalSalesLY =
-			
+
 			CALCULATE(
 			    [Total_Net_Sales],
 			    PREVIOUSYEAR('Calendar'[Date])
@@ -159,8 +181,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+		annotation Description = "Net sales for the previous full calendar year"
+
 	measure %DiffSalesLY =
-			
+
 			IF(
 			    NOT ISBLANK([TotalSalesLY]),
 			    DIVIDE(
@@ -171,8 +195,10 @@ table Metrics
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		lineageTag: 3a925547-8af1-48c5-bd41-86d7b8c218ca
 
+		annotation Description = "Percentage change in net sales compared to the previous year (DiffSalesLY / TotalSalesLY)"
+
 	measure %TotalIssues =
-			
+
 			DIVIDE(
 			    [TotalIssues],
 			    CALCULATE(
@@ -184,13 +210,15 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Issues as a percentage of total issues across all currently selected products"
+
 	measure %TotalSales = ```
-			
+
 			DIVIDE(
 			    [Total_Net_Sales],
 			    CALCULATE(
 			        [Total_Net_Sales],
-			        ALLSELECTED(Products) 
+			        ALLSELECTED(Products)
 			    )
 			)
 			```
@@ -198,8 +226,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Net sales as a percentage of total net sales across all currently selected products"
+
 	measure DiffSalesLY =
-			
+
 			// Primero, comprobamos si hay ventas en el periodo actual para evitar cálculos innecesarios
 			IF(
 			    NOT ISBLANK([Total_Net_Sales]),
@@ -215,8 +245,10 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Absolute difference in net sales vs the previous year. Returns N/A when no prior year data is available"
+
 	measure '%Sales per gender' =
-			
+
 			DIVIDE(
 			    [Total_Net_Sales],
 			    CALCULATE(
@@ -228,17 +260,23 @@ table Metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation Description = "Net sales as a percentage of total net sales across all genders, ignoring the current gender filter"
+
 	measure 'medida prueba dev' = sum(FactSales[Amount])
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
 		lineageTag: a0e496af-0d5a-4fe6-9ec1-70a90811d9ef
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
 
+		annotation Description = "Development test measure — sum of gross sales amount before promotions"
+
 	measure total_amount = SUM(FactSales[Amount])
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 09b39aba-b7c0-4d7f-8c2c-98109296a98e
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+		annotation Description = "Sum of gross sales amount before any promotions or discounts are applied"
 
 	measure 'Market Share by Category' = DIVIDE([Total_Net_Sales], CALCULATE([Total_Net_Sales], ALL('Products')), 0)
 		formatString: 0.00%

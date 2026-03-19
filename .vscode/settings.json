@@ -1,0 +1,12 @@
+{
+	"servers": {
+		"powerbi-local": {
+			"command": "npx.cmd",
+			"args": [
+				"-y",
+				"github:microsoft/powerbi-modeling-mcp",
+				"C:\\Users\\victor.moro\\Desktop\\Guía Git x Fabric\\modelo prueba.SemanticModel"
+			]
+		}
+	}
+}
