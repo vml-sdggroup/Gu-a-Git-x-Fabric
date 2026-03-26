@@ -10,7 +10,7 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_QueryOrder = ["Issues & Promotions","Products","FactSales","Segmentation","Stores","fnCrearCalendario","Calendario"]
 
-annotation PBI_ProTooling = ["DevMode"]
+annotation PBI_ProTooling = ["DevMode","TMDL-Extension"]
 
 ref table Products
 ref table FactSales
