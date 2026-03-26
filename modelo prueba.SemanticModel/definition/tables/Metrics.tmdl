@@ -3,6 +3,7 @@ table Metrics
 
 	measure Total_Net_Sales = SUM(FactSales[Sale])
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: Sales
 		lineageTag: 961d4c6f-aef7-405d-8f4a-77fa9a3b93b9
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -11,6 +12,7 @@ table Metrics
 
 	measure TotalUnits = SUM(FactSales[Unit])
 		formatString: 0
+		displayFolder: Sales
 		lineageTag: e467f0fe-193e-4c4a-b8d8-61e7ed255b69
 
 		annotation Description = "Total quantity of units sold"
@@ -22,12 +24,14 @@ table Metrics
 			    KEEPFILTERS(FactSales[Issue] <> "None")
 			)
 		formatString: 0
+		displayFolder: Issues
 		lineageTag: 00de0ed5-cf19-482b-b26b-63d37663bbf2
 
 		annotation Description = "Count of transactions with reported issues"
 
 	measure TotalSalesWithPromotion = CALCULATE(SUM(FactSales[Sale]), FactSales[Promotion] <> "None")
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: Promotions
 		lineageTag: bb887b54-7fe6-4519-98ee-78b382a4a648
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -41,6 +45,7 @@ table Metrics
 			    FactSales[Amount] * FactSales[AmountPromotion]
 			)
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: Promotions
 		lineageTag: 7dbf7501-0b9e-4d3b-8f64-a9933a0173aa
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -49,6 +54,7 @@ table Metrics
 
 	measure TransactionsNumber = DISTINCTCOUNT(FactSales[SalesID])
 		formatString: 0
+		displayFolder: Sales
 		lineageTag: 2a119eff-c9df-4fd9-8ff2-796dbf8ca6d8
 
 		annotation Description = "Count of distinct transactions (unique SalesIDs)"
@@ -59,6 +65,7 @@ table Metrics
 			    [TotalIssues],
 			    [TransactionsNumber],0
 			)
+		displayFolder: Issues
 		lineageTag: bb2772e4-e14b-49c5-8b4b-e65c123f738f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -72,6 +79,7 @@ table Metrics
 			    [Total_Net_Sales] + [TotalAmountDiscounted],
 			    0
 			)
+		displayFolder: Promotions
 		lineageTag: 5a098d7d-2480-4c28-aa97-3bdacc6ede60
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -86,6 +94,7 @@ table Metrics
 			    0
 			)
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: Sales
 		lineageTag: 8ea77e37-2c0f-4dd4-b99a-720fb0d9d87e
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -99,6 +108,7 @@ table Metrics
 			    SAMEPERIODLASTYEAR('Calendar'[Date])
 			) + 0
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: Sales vs LY
 		lineageTag: 76359641-7d79-4ecd-a0c2-736590a34f12
 
 		annotation Description = "Net sales for the same period in the previous year"
@@ -109,6 +119,7 @@ table Metrics
 			    Metrics[TotalIssues],
 			    FactSales[Promotion] <> "None"
 			)
+		displayFolder: Issues
 		lineageTag: 8c9021ce-d0df-4e42-9ec8-ed0dad6285ec
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -121,6 +132,7 @@ table Metrics
 			    Metrics[TotalIssues],
 			    FactSales[Promotion] = "None"
 			)
+		displayFolder: Issues
 		lineageTag: 76e9a0cc-8ef8-4b64-b3c2-5498eac44cbd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -134,6 +146,7 @@ table Metrics
 			    SAMEPERIODLASTYEAR(('Calendar'[Date])
 			))
 		formatString: 0
+		displayFolder: Issues
 		lineageTag: 791ebaaa-9d1b-42e2-8e69-ef5e284bf442
 
 		annotation Description = "Count of issues for the same period in the previous year"
@@ -147,6 +160,7 @@ table Metrics
 			        [TotalIssuesLY]),
 			    0
 			)
+		displayFolder: Issues
 		lineageTag: 35560aed-ba86-49bd-bccc-b32e44cde60b
 
 		annotation Description = "Percentage change in issues compared to the same period last year (DiffIssuesLY / TotalIssuesLY)"
@@ -164,6 +178,7 @@ table Metrics
 			        "N/A"
 			    )
 			)
+		displayFolder: Issues
 		lineageTag: 4807adca-3117-40e7-8f97-f210a57e8a85
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -177,6 +192,7 @@ table Metrics
 			    PREVIOUSYEAR('Calendar'[Date])
 			)
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: Sales vs LY
 		lineageTag: cf55e4ad-e7f1-4580-a6cb-fc3767b56e23
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -193,6 +209,7 @@ table Metrics
 			    0
 			)
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Sales vs LY
 		lineageTag: 3a925547-8af1-48c5-bd41-86d7b8c218ca
 
 		annotation Description = "Percentage change in net sales compared to the previous year (DiffSalesLY / TotalSalesLY)"
@@ -206,6 +223,7 @@ table Metrics
 			        ALLSELECTED(Products)
 			    )
 			)
+		displayFolder: Share & Mix
 		lineageTag: a3b9e3fc-e375-4989-b8f9-663e643c4fb9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -222,6 +240,7 @@ table Metrics
 			    )
 			)
 			```
+		displayFolder: Share & Mix
 		lineageTag: 99e39e9d-5115-4999-83b4-1f8b4881a504
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -241,6 +260,7 @@ table Metrics
 			        "N/A"
 			    )
 			)
+		displayFolder: Sales vs LY
 		lineageTag: ad8395cc-614e-4893-87bf-b34ba1572062
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -256,6 +276,7 @@ table Metrics
 			        ALL(FactSales[Gender])
 			    )
 			)
+		displayFolder: Share & Mix
 		lineageTag: 5c834531-33e4-44f8-baf7-10e3c99034aa
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -264,6 +285,7 @@ table Metrics
 
 	measure 'medida prueba dev' = sum(FactSales[Amount])
 		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		displayFolder: _Dev
 		lineageTag: a0e496af-0d5a-4fe6-9ec1-70a90811d9ef
 
 		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
@@ -272,6 +294,7 @@ table Metrics
 
 	measure total_amount = SUM(FactSales[Amount])
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: _Dev
 		lineageTag: 09b39aba-b7c0-4d7f-8c2c-98109296a98e
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
@@ -280,7 +303,7 @@ table Metrics
 
 	measure 'Market Share by Category' = DIVIDE([Total_Net_Sales], CALCULATE([Total_Net_Sales], ALL('Products')), 0)
 		formatString: 0.00%
-		displayFolder: Market Analysis
+		displayFolder: Share & Mix
 		lineageTag: a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p
 
 		annotation Description = "Calculates the relative percentage of market share by product category"
